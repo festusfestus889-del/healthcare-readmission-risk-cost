@@ -1,0 +1,17 @@
+name: Healthcare Readmission Pipeline
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 9 * * *'
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install -r requirements.txt
+      - run: python src/generate_healthcare_data.py
+      - run: python src/readmission_model.py
+      - run: python src/cost_impact.py
